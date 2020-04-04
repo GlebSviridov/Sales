@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Sales.Business.Interfaces;
-using Sales.Business.Services;
-using Sales.Data.Interfaces;
-using Sales.Data.Repositories;
+using Sales.BusinessLayer.Interfaces;
+using Sales.BusinessLayer.Services;
+using Sales.DataLayer.Interfaces;
+using Sales.DataLayer.Repositories;
 
 namespace Sales.Core
 {
@@ -13,6 +13,8 @@ namespace Sales.Core
         {
             services.AddTransient<IUserRepository, UserRepository>(provider => new UserRepository(ConnectionString));
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IBookRepository, BookRepository>(provider => new BookRepository(ConnectionString));
+            services.AddTransient<IBookService, BookService>();
         }
     }
 }

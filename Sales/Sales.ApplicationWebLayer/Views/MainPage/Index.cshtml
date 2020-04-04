@@ -1,0 +1,63 @@
+﻿@model List<Sales.BusinessLayer.Models.Book>
+
+@{
+    ViewData["Title"] = "Сейлы!";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>testing</title>
+</head>
+<body>
+<div>
+    <table class="table table-bordered">
+        <th>
+            Book Id
+        </th>
+        <th>
+            Book Cover Picture
+        </th>
+        <th>
+            Book Title
+        </th>
+        <th>
+            Book Author
+        </th>
+        <th>
+            Book Pubication Year
+        </th>
+        <th>
+            Book ISBN code
+        </th>
+        <th>
+            Book price
+        </th>
+        <th>
+            Copies remain
+        </th>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Id</td>
+                <td>
+                    <img src="data:image/png;base64, @book.CoverPicture"/>
+                </td>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.PublicationYear</td>
+                <td>@book.Isbn</td>
+                <td>@book.Price</td>
+                <td>@book.CopiesNumber</td>
+            </tr>
+        }
+    </table>
+    <div>
+        @await Component.InvokeAsync("ShoppingCartController")
+    </div>
+
+
+</div>
+</body>
+</html>
