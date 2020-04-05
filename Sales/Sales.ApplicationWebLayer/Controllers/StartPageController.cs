@@ -59,9 +59,15 @@ namespace Sales.ApplicationWebLayer.Controllers
                 return false;
             }
 
-            var hasUserExists = _userService.CheckForExisting(userId);
+            var storedUser = Mapper.Map(_userService.GetUser(userId));
+            var hasUserExists = storedUser != null;
 
-            return hasUserExists;
+            if (!hasUserExists)
+            {
+                return false;
+            }
+
+            return !storedUser.HasUsed;
         }
 
         private async Task AuthenticateUser(string userId)

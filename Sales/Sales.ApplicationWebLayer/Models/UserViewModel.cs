@@ -7,5 +7,7 @@ namespace Sales.ApplicationWebLayer.Models
     {
         [Required]
         public string UserId { get; set; }
+
+        public bool HasUsed { get; set; }
     }
 }

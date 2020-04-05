@@ -32,7 +32,7 @@ namespace Sales.DataLayer.Repositories
         {
             using IDbConnection db = new SqlConnection(_connectionString);
 
-            var sqlQuery = "insert into [User] output inserted.[Id] values (newid())";
+            var sqlQuery = "insert into [User] output inserted.[Id] values (newid(), 0)";
 
             var user = db.Query<UserDto>(sqlQuery).FirstOrDefault();
 

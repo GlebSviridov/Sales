@@ -10,7 +10,8 @@ namespace Sales.BusinessLayer.Helpers
         {
             return new User
             {
-                Id = userDto.Id
+                Id = userDto.Id,
+                HasUsed = userDto.HasUsed
             };
         }
 

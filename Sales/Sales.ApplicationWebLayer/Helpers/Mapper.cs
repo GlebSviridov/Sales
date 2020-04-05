@@ -9,7 +9,8 @@ namespace Sales.ApplicationWebLayer.Helpers
         {
             return new UserViewModel
             {
-                UserId = user.Id.ToString()
+                UserId = user.Id.ToString(),
+                HasUsed = user.HasUsed
             };
         }
 
