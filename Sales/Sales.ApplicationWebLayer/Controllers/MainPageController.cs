@@ -26,15 +26,9 @@ namespace Sales.ApplicationWebLayer.Controllers
             var userId = User.Identity.Name;
             ViewData["UserId"] = userId;
 
-            var books = GetBooks();
-            var orderedItems = _shoppingCartService.GetOrderedBooks(Guid.Parse(userId));
+            var orderedItems = GetOrderedBooks(userId);
 
-            foreach (var orderedBook in orderedItems)
-            {
-                books.First(b => b.Id == orderedBook.BookId).HasAlreadyInCart = true;
-            }
-
-            return View(books);
+            return View(orderedItems);
         }
 
         [HttpPost]
@@ -59,9 +53,17 @@ namespace Sales.ApplicationWebLayer.Controllers
             return RedirectToAction("Index");
         }
 
-        private List<BookViewModel> GetBooks()
+        private List<BookViewModel> GetOrderedBooks(string userId)
         {
-            return _bookService.GetAllBooks().Select(Mapper.Map).ToList();
+            var orderedItems = _shoppingCartService.GetOrderedBooks(Guid.Parse(userId));
+            var books = _bookService.GetAllBooks().Select(Mapper.Map).ToList();
+
+            foreach (var orderedBook in orderedItems)
+            {
+                books.First(b => b.Id == orderedBook.BookId).HasAlreadyInCart = true;
+            }
+
+            return books;
         }
 
         public IActionResult MakeOrder(List<int> bookIds)
