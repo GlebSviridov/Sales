@@ -36,5 +36,23 @@ namespace Sales.DataLayer.Repositories
 
             return result.ToList();
         }
+
+        public List<BookDto> GetList(IEnumerable<int> bookIds)
+        {
+            using IDbConnection db = new SqlConnection(_connectionString);
+            var sqlQuery = "Select * from [Book] where Id in (@BookIds)";
+
+            var result = db.Query<BookDto>(sqlQuery, new {BookIds = bookIds});
+
+            return result.ToList();
+        }
+
+        public void UpdateCopiesNumber(int bookId, int changeValue)
+        {
+            using IDbConnection db = new SqlConnection(_connectionString);
+            var sqlQuery = "Update [Book] set CopiesNumber = CopiesNumber + @ChangeValue where Id = @BookId";
+
+            db.Query(sqlQuery, new {BookId = bookId, ChangeValue = changeValue});
+        }
     }
 }

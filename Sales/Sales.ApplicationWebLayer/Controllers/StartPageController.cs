@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Sales.ApplicationWebLayer.Helpers;
 using Sales.ApplicationWebLayer.Models;
@@ -23,12 +28,12 @@ namespace Sales.ApplicationWebLayer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult InputPromoCode(UserViewModel user)
+        public async Task<IActionResult> InputPromoCode(UserViewModel user)
         {
             var isCorrectUser = CheckUser(user);
             if (isCorrectUser)
             {
-                ViewBag.UserId = user.UserId;
+                await AuthenticateUser(user.UserId);
                 return RedirectToAction("Index", "MainPage");
             }
 
@@ -36,13 +41,14 @@ namespace Sales.ApplicationWebLayer.Controllers
             return View("Index", user);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RegisterNewPromoCode()
+        public async Task<IActionResult> RegisterNewPromoCode()
         {
             var userViewModel = Mapper.Map(_userService.CreateUser());
-            ViewBag.UserId = userViewModel.UserId;
-            TempData["UserId"] = userViewModel.UserId;
+
+            await AuthenticateUser(userViewModel.UserId);
             return RedirectToAction("Index", "MainPage");
         }
 
@@ -56,6 +62,22 @@ namespace Sales.ApplicationWebLayer.Controllers
             var hasUserExists = _userService.CheckForExisting(userId);
 
             return hasUserExists;
+        }
+
+        private async Task AuthenticateUser(string userId)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, userId)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims,
+                "ApplicationCookie",
+                ClaimsIdentity.DefaultNameClaimType,
+                ClaimsIdentity.DefaultRoleClaimType);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity));
         }
     }
 }

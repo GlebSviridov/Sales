@@ -1,0 +1,46 @@
+﻿@model List<Sales.ApplicationWebLayer.Models.ShoppingCartItemViewModel>
+
+<body>
+<h2>
+    Shopping Cart
+</h2>
+<table class="table">
+    <th>
+        Position
+    </th>
+    <th>
+        Title
+    </th>
+    <th>
+        Price
+    </th>
+    @foreach (var cartItem in Model)
+    {
+        <tr>
+            <td>
+                @cartItem.Id
+            </td>
+            <td>
+                @cartItem.BookTitle
+            </td>
+            <td>
+                @cartItem.BookPrice
+            </td>
+            <td>
+                <form asp-action="RemoveFromCart">
+                    <button asp-action="RemoveFromCart" type="submit" asp-route-bookId="@cartItem.BookId" class="btn btn-outline-secondary">remove</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+<div>
+    Order sum: @Model.Sum(i => i.BookPrice)
+    @if (@Model.Sum(i => i.BookPrice) >= 2000)
+    {
+        <form asp-action="MakeOrder" asp-controller="MainPage">
+            <button asp-action="MakeOrder" type="submit" asp-route-bookIds="@Model.Select(i => i.BookId).ToList()" class="btn btn-outline-secondary">Make order</button>
+        </form>
+    }
+</div>
+</body>

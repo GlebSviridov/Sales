@@ -1,4 +1,6 @@
-﻿namespace Sales.ApplicationWebLayer.Models
+﻿using Sales.DataLayer.Dto;
+
+namespace Sales.ApplicationWebLayer.Models
 {
     public class BookViewModel
     {
@@ -10,5 +12,6 @@
         public string CoverPicture { get; set; }
         public decimal Price { get; set; }
         public int CopiesNumber { get; set; }
+        public bool HasAlreadyInCart { get; set; }
     }
 }

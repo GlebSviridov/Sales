@@ -3,7 +3,6 @@ using System.Linq;
 using Sales.BusinessLayer.Helpers;
 using Sales.BusinessLayer.Interfaces;
 using Sales.BusinessLayer.Models;
-using Sales.DataLayer.Dto;
 using Sales.DataLayer.Interfaces;
 
 namespace Sales.BusinessLayer.Services
@@ -22,6 +21,16 @@ namespace Sales.BusinessLayer.Services
             var booksDto = _bookRepository.GetList();
 
             return booksDto.Select(Mapper.Map).ToList();
+        }
+
+        public void DecrementCopiesNumber(int bookId)
+        {
+            _bookRepository.UpdateCopiesNumber(bookId, -1);
+        }
+
+        public void IncrementCopiesNumber(int bookId)
+        {
+            _bookRepository.UpdateCopiesNumber(bookId, 1);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿@model List<Sales.BusinessLayer.Models.Book>
+﻿@using Sales.ApplicationWebLayer.Components
+@using Sales.ApplicationWebLayer.Controllers
+@model List<BookViewModel>
 
 @{
     ViewData["Title"] = "Сейлы!";
@@ -12,30 +14,30 @@
 </head>
 <body>
 <div>
-    <table class="table table-bordered">
+    <table class="table">
         <th>
-            Book Id
+            @Html.DisplayNameFor(model => model[0].Id)
         </th>
         <th>
-            Book Cover Picture
+            @Html.DisplayNameFor(model => model[0].CoverPicture)
         </th>
         <th>
-            Book Title
+            @Html.DisplayNameFor(model => model[0].Title)
         </th>
         <th>
-            Book Author
+            @Html.DisplayNameFor(model => model[0].Author)
         </th>
         <th>
-            Book Pubication Year
+            @Html.DisplayNameFor(model => model[0].PublicationYear)
         </th>
         <th>
-            Book ISBN code
+            @Html.DisplayNameFor(model => model[0].Isbn)
         </th>
         <th>
-            Book price
+            @Html.DisplayNameFor(model => model[0].Price)
         </th>
         <th>
-            Copies remain
+            @Html.DisplayNameFor(model => model[0].CopiesNumber)
         </th>
         @foreach (var book in Model)
         {
@@ -50,12 +52,24 @@
                 <td>@book.Isbn</td>
                 <td>@book.Price</td>
                 <td>@book.CopiesNumber</td>
+                @if (book.CopiesNumber > 0)
+                {
+                    @if (!book.HasAlreadyInCart)
+                    {
+                        <td>
+                            <form asp-action="AddToCart">
+                                <button asp-action="AddToCart" type="submit" asp-route-bookId="@book.Id" class="btn btn-outline-secondary">move to cart</button>
+                            </form>
+                        </td>
+                    }
+                }
+
             </tr>
         }
     </table>
-    <div>
-        @await Component.InvokeAsync("ShoppingCartController")
-    </div>
+    <span>
+        @await Component.InvokeAsync(typeof(ShoppingCartViewComponent))
+    </span>
 
 
 </div>

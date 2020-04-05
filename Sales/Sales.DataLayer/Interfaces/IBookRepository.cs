@@ -7,5 +7,7 @@ namespace Sales.DataLayer.Interfaces
     {
         BookDto Get(int bookId);
         List<BookDto> GetList();
+        List<BookDto> GetList(IEnumerable<int> bookIds);
+        void UpdateCopiesNumber(int bookId, int changeValue);
     }
 }

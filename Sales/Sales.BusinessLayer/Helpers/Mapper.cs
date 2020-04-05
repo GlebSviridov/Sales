@@ -1,4 +1,5 @@
 ﻿using Sales.BusinessLayer.Models;
+using Sales.BusinessLayer.Services;
 using Sales.DataLayer.Dto;
 
 namespace Sales.BusinessLayer.Helpers
@@ -25,6 +26,17 @@ namespace Sales.BusinessLayer.Helpers
                 CopiesNumber = bookDto.CopiesNumber,
                 CoverPicture = bookDto.CoverPicture,
                 PublicationYear = bookDto.PublicationYear
+            };
+        }
+
+        public static ShoppingCartItem Map(ShoppingCartItemDto itemDto)
+        {
+            return new ShoppingCartItem
+            {
+                Id = itemDto.Id,
+                BookId = itemDto.BookId,
+                BookTitle = itemDto.Title,
+                BookPrice = itemDto.Price
             };
         }
     }
