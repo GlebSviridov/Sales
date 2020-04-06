@@ -48,5 +48,10 @@ namespace Sales.DataLayer.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public void Delete(List<int> bookIds, Guid userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

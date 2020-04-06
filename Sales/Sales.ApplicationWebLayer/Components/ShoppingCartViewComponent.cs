@@ -23,7 +23,12 @@ namespace Sales.ApplicationWebLayer.Components
 
             var cartItems = GetCartItems(userId);
 
-            return View($"ShoppingCart", cartItems);
+            var shoppingCart = new ShoppingCartViewModel
+            {
+                CartItems = cartItems
+            };
+
+            return View($"ShoppingCart", shoppingCart);
         }
 
         private List<ShoppingCartItemViewModel> GetCartItems(Guid userId)

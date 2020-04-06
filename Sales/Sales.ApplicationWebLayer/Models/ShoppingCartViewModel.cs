@@ -1,10 +1,14 @@
-﻿namespace Sales.ApplicationWebLayer.Models
+﻿using System.Collections.Generic;
+
+namespace Sales.ApplicationWebLayer.Models
 {
-    public class ShoppingCartItemViewModel
+    public class ShoppingCartViewModel
     {
-        public int Id { get; set; }
-        public int BookId { get; set; }
-        public string BookTitle { get; set; }
-        public decimal BookPrice { get; set; }
+        public List<ShoppingCartItemViewModel> CartItems { get; set; }
+
+        public ShoppingCartViewModel()
+        {
+            CartItems = new List<ShoppingCartItemViewModel>();
+        }
     }
 }

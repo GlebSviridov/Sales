@@ -9,5 +9,6 @@ namespace Sales.DataLayer.Interfaces
         public List<ShoppingCartItemDto> GetList(Guid userId);
         void Insert(int bookId, Guid userId);
         void Delete(int bookId, Guid userId);
+        void Delete(List<int> bookIds, Guid userId);
     }
 }

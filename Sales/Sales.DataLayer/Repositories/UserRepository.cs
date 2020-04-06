@@ -38,5 +38,14 @@ namespace Sales.DataLayer.Repositories
 
             return user;
         }
+
+        public void Update(Guid userId, bool hasUsed)
+        {
+            using IDbConnection db = new SqlConnection(_connectionString);
+
+            var sqlQuery = "Update [User] set HasUsed = @HasUsed where Id = @UserId";
+
+            var user = db.Query(sqlQuery, new {HasUsed = hasUsed, UserId = userId});
+        }
     }
 }

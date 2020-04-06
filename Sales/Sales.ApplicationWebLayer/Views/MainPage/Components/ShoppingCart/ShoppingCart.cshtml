@@ -1,4 +1,4 @@
-﻿@model List<Sales.ApplicationWebLayer.Models.ShoppingCartItemViewModel>
+﻿@model Sales.ApplicationWebLayer.Models.ShoppingCartViewModel
 
 <head>
     <script src="~/js/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>
@@ -23,44 +23,47 @@
 </head>
 <body>
 <h2>
-    Shopping Cart
+    Корзина
 </h2>
 <table class="table">
     <th>
-        Position
+        Позиция
     </th>
     <th>
-        Title
+        Название
     </th>
     <th>
-        Price
+        Цена
     </th>
-    @foreach (var cartItem in Model)
+    @using (Html.BeginForm())
     {
-        <tr>
-            <td>
-                @cartItem.Id
-            </td>
-            <td>
-                @cartItem.BookTitle
-            </td>
-            <td>
-                @cartItem.BookPrice
-            </td>
-            <td>
-                <form asp-action="RemoveFromCart">
-                    <button asp-action="RemoveFromCart" type="submit" asp-route-bookId="@cartItem.BookId" onclick="increaseRemainingCopies(@cartItem.BookId)" class="btn btn-outline-secondary">remove</button>
-                </form>
-            </td>
-        </tr>
+        @foreach (var cartItem in Model.CartItems)
+        {
+            <tr>
+                <td>
+                    @cartItem.Id
+                </td>
+                <td>
+                    @cartItem.BookTitle
+                </td>
+                <td>
+                    @cartItem.BookPrice
+                </td>
+                <td>
+                    <form asp-action="RemoveFromCart">
+                        <button asp-action="RemoveFromCart" type="submit" asp-route-bookId="@cartItem.BookId" onclick="increaseRemainingCopies(@cartItem.BookId)" class="btn btn-outline-secondary">убрать</button>
+                    </form>
+                </td>
+            </tr>
+        }
     }
 </table>
 <div>
-    Order sum: @Model.Sum(i => i.BookPrice)
-    @if (@Model.Sum(i => i.BookPrice) >= 2000)
+    Итоговая сумма: @Model.CartItems.Sum(i => i.BookPrice)
+    @if (Model.CartItems.Sum(i => i.BookPrice) >= 2000)
     {
         <form asp-action="MakeOrder" asp-controller="MainPage">
-            <button asp-action="MakeOrder" type="submit" asp-route-bookIds="@Model.Select(i => i.BookId).ToList()" class="btn btn-outline-secondary">Make order</button>
+            <button asp-action="MakeOrder" type="submit" asp-route-orderedBookIds ="@string.Join(",",Model.CartItems.Select(i => i.BookId))" class="btn btn-outline-secondary">Оформить заказ</button>
         </form>
     }
 </div>

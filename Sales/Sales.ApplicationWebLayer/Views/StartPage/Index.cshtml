@@ -11,7 +11,7 @@
     <h3>Welcome to huge sales!</h3>
     <form asp-action="InputPromoCode" asp-controller="StartPage">
         <div class="form-group">
-            <h3>Input your Promo Code here</h3>
+            <h3>Введите промокод</h3>
             <input asp-for="UserId" type="text"/>
         </div>
         @Html.ValidationMessageFor(user => user.UserId)
@@ -21,7 +21,7 @@
     </form>
     <form asp-action="RegisterNewPromoCode" asp-controller="StartPage">
         <div class="form-group">
-            <h3>Or get new one by link bellow</h3>
+            <h3>Или получите новый</h3>
             <button asp-action="RegisterNewPromoCode" type="submit" value="Submit" class="btn btn-outline-secondary"> Получить новый </button>
         </div>
     </form>

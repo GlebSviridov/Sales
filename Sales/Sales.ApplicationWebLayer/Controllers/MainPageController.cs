@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Sales.ApplicationWebLayer.Helpers;
 using Sales.ApplicationWebLayer.Models;
 using Sales.BusinessLayer.Interfaces;
@@ -16,11 +15,13 @@ namespace Sales.ApplicationWebLayer.Controllers
     {
         private readonly IBookService _bookService;
         private readonly IShoppingCartService _shoppingCartService;
+        private readonly IOrderService _orderService;
 
-        public MainPageController(IBookService bookService, IShoppingCartService shoppingCartService)
+        public MainPageController(IBookService bookService, IShoppingCartService shoppingCartService, IOrderService orderService)
         {
             _bookService = bookService;
             _shoppingCartService = shoppingCartService;
+            _orderService = orderService;
         }
 
         public IActionResult Index()
@@ -69,9 +70,16 @@ namespace Sales.ApplicationWebLayer.Controllers
             return books;
         }
 
-        public IActionResult MakeOrder(List<int> bookIds)
+        [HttpPost]
+        public IActionResult MakeOrder(string orderedBookIds)
         {
-            throw new NotImplementedException();
+            var userId = Guid.Parse(User.Identity.Name);
+
+            _orderService.CreateOrder(userId, orderedBookIds);
+
+            HttpContext.SignOutAsync();
+
+            return RedirectToAction("Index", "StartPage");
         }
     }
 }

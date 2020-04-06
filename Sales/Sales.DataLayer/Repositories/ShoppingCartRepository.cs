@@ -47,5 +47,14 @@ namespace Sales.DataLayer.Repositories
 
             db.Query(sqlQuery, new {bookId = bookId, userId = userId});
         }
+
+        public void Delete(List<int> bookIds, Guid userId)
+        {
+            using IDbConnection db = new SqlConnection(_connectionString);
+
+            var sqlQuery = "Delete FROM [ShoppingCart] where BookId in @bookIds and UserId = @userId";
+
+            db.Query(sqlQuery, new {bookIds = bookIds , userId = userId});
+        }
     }
 }

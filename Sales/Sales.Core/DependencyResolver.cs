@@ -22,6 +22,9 @@ namespace Sales.Core
             services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>(provider =>
                 new ShoppingCartRepository(ConnectionString));
             services.AddTransient<IShoppingCartService, ShoppingCartService>();
+
+            services.AddTransient<IOrderRepository, OrderRepository>(provider => new OrderRepository(ConnectionString));
+            services.AddTransient<IOrderService, OrderService>();
         }
     }
 }

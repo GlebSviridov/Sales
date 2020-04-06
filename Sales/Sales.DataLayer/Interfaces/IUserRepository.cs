@@ -7,5 +7,6 @@ namespace Sales.DataLayer.Interfaces
     {
         UserDto Get(Guid userId);
         UserDto Create();
+        void Update(Guid userId, bool hasUsed);
     }
 }

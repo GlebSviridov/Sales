@@ -37,10 +37,10 @@ namespace Sales.DataLayer.Repositories
             return result.ToList();
         }
 
-        public List<BookDto> GetList(IEnumerable<int> bookIds)
+        public List<BookDto> GetList(List<int> bookIds)
         {
             using IDbConnection db = new SqlConnection(_connectionString);
-            var sqlQuery = "Select * from [Book] where Id in (@BookIds)";
+            var sqlQuery = "Select * from [Book] where Id in @BookIds";
 
             var result = db.Query<BookDto>(sqlQuery, new {BookIds = bookIds});
 
