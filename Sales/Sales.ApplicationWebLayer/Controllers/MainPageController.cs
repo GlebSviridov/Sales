@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Sales.ApplicationWebLayer.Helpers;
 using Sales.ApplicationWebLayer.Models;
 using Sales.BusinessLayer.Interfaces;
@@ -32,6 +34,7 @@ namespace Sales.ApplicationWebLayer.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult AddToCart(int bookId)
         {
             var userId = Guid.Parse(User.Identity.Name);

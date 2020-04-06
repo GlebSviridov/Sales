@@ -10,7 +10,24 @@
 
 <html>
 <head>
-    <title>testing</title>
+    <script src="~/js/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>
+    <script>
+    const hubConnection = new signalR.HubConnectionBuilder()
+    .withUrl("/bookCounterHub")
+    .build();
+
+    hubConnection.on("UpdateRemainCopiesNumber", function(bookId, changeValue) {
+        let elemValue = document.getElementById(bookId).firstChild;
+        let nodeValue = elemValue.nodeValue;
+        let newValue = parseInt(changeValue) + parseInt(nodeValue);
+        elemValue.replaceData(0, elemValue.length, newValue);
+    });
+    hubConnection.start();
+
+    function decreaseRemainingCopies(id) {
+        hubConnection.invoke("UpdateRemainCopiesNumber", id, -1);
+    }
+    </script>
 </head>
 <body>
 <div>
@@ -51,14 +68,14 @@
                 <td>@book.PublicationYear</td>
                 <td>@book.Isbn</td>
                 <td>@book.Price</td>
-                <td>@book.CopiesNumber</td>
+                <td id="@book.Id">@book.CopiesNumber</td>
                 @if (book.CopiesNumber > 0)
                 {
                     @if (!book.HasAlreadyInCart)
                     {
                         <td>
                             <form asp-action="AddToCart">
-                                <button asp-action="AddToCart" type="submit" asp-route-bookId="@book.Id" class="btn btn-outline-secondary">move to cart</button>
+                                <button type="submit" id="submitButton" class="btn btn-outline-secondary" onclick="decreaseRemainingCopies(@book.Id)"  asp-action="AddToCart" asp-route-bookId="@book.Id"> cartCart</button>
                             </form>
                         </td>
                     }

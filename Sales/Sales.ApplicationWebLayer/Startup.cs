@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Sales.ApplicationWebLayer.Helpers;
 using Sales.Core;
 
 namespace Sales.ApplicationWebLayer
@@ -29,10 +30,8 @@ namespace Sales.ApplicationWebLayer
             DependencyResolver.InjectDependencies(services);
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/StartPage");
-                });
+                .AddCookie(options => { options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/StartPage"); });
+            services.AddSignalR();
             services.AddControllersWithViews();
         }
 
@@ -57,11 +56,13 @@ namespace Sales.ApplicationWebLayer
             app.UseAuthentication();
             app.UseAuthorization();
 
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=StartPage}/{action=Index}/{id?}");
+                endpoints.MapHub<BookCounterHub>("/bookCounterHub");
             });
         }
     }
